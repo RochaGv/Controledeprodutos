@@ -2,23 +2,45 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 /**
  *
  * @author Frog
  */
 public class productForm extends javax.swing.JFrame {
-   
+    
+        public productForm(){
+            initComponents();
+            Connect();
+            LoadProductNo();
+        }    
     Connection con;
     PreparedStatement pst;
 
-    public productForm() {
-        initComponents();
+
+    public void Connect() {
         try {
             con = ConexaoMySQL.getConnection();  
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Erro ao conectar ao banco de dados: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, e.getMessage() + "Erro ao conectar ao banco de dados: ");
+        }
+        
+    }
+    
+    public void LoadProductNo(){
+        try {
+            pst = con.prepareStatement("SELECT produtoid From produtos");
+            ResultSet rs = pst.executeQuery();
+            txtId.removeAllItems();
+            while(rs.next()){
+                txtId.addItem(rs.getString(1));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(productForm.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     /**
@@ -62,6 +84,11 @@ public class productForm extends javax.swing.JFrame {
         });
 
         btnAtual.setText("Atualizar");
+        btnAtual.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAtualActionPerformed(evt);
+            }
+        });
 
         btnLer.setText("Ler");
 
@@ -136,8 +163,18 @@ public class productForm extends javax.swing.JFrame {
         jLabel3.setText("Estoque:");
 
         btnPesq.setText("Pesquisar");
+        btnPesq.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesqActionPerformed(evt);
+            }
+        });
 
         txtId.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        txtId.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtIdActionPerformed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel4.setText("Produto ID:");
@@ -251,7 +288,7 @@ public class productForm extends javax.swing.JFrame {
 
     try {
         
-        Float Preco = Float.parseFloat(strPreco);
+        Float Preco = Float.valueOf(strPreco);
 
         
         pst = con.prepareStatement("INSERT INTO produtos (pNome, Validade, Estoque) VALUES(?, ?, ?)");
@@ -273,6 +310,44 @@ public class productForm extends javax.swing.JFrame {
     }
 
     }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnAtualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtualActionPerformed
+    try {
+        String pNome = txtNome.getText();
+        String strPreco = txtPreco.getText();
+        String Estoque = txtEstoq.getText();
+        String Validade = txtVal.getText();
+        String Id = txtId.getSelectedItem().toString();
+        
+        pst = con.prepareStatement("UPDATE produtos SET pNome=?,preco=?,estoque=?,validade=? WHERE produtoid=?");
+            pst.setString(1, pNome);
+            pst.setFloat(2, Float.parseFloat(strPreco));
+            pst.setInt(3, Integer.parseInt(Estoque));
+            pst.setString(4, Validade);
+            pst.setInt(5, Integer.parseInt(Id));
+            
+            int k=pst.executeUpdate(); 
+            if(k==1){
+            JOptionPane.showMessageDialog(this,"Atualização completa do produto: ");
+                txtNome.setText("");
+                txtEstoq.setText("");
+                txtVal.setText("");
+                txtNome.requestFocus();
+                LoadProductNo();
+            }
+    } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Erro ao atualizar o produto: " + e.getMessage());
+    }
+            
+    }//GEN-LAST:event_btnAtualActionPerformed
+
+    private void btnPesqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesqActionPerformed
+    
+    }//GEN-LAST:event_btnPesqActionPerformed
+
+    private void txtIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtIdActionPerformed
 
     /**
      * @param args the command line arguments
@@ -301,10 +376,8 @@ public class productForm extends javax.swing.JFrame {
         }
         //</editor-fold>
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new productForm().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new productForm().setVisible(true);
         });
     }
     public class ConexaoMySQL {
