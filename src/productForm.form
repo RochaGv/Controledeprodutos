@@ -67,9 +67,9 @@
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="btnAtual" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="btnLer" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="btnExc" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="bntExport" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -81,8 +81,8 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btnAdd" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnAtual" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnLer" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnExc" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="bntExport" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -106,17 +106,20 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAtualActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="btnLer">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Ler"/>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JButton" name="btnExc">
           <Properties>
             <Property name="text" type="java.lang.String" value="Excluir"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnExcActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="bntExport">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Exportar para CSV"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bntExportActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

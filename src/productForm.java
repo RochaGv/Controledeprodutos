@@ -10,6 +10,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import java.io.*;
+import java.io.FileFilter;
 /**
  *
  * @author Frog
@@ -60,8 +62,8 @@ public class productForm extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         btnAdd = new javax.swing.JButton();
         btnAtual = new javax.swing.JButton();
-        btnLer = new javax.swing.JButton();
         btnExc = new javax.swing.JButton();
+        bntExport = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -95,12 +97,17 @@ public class productForm extends javax.swing.JFrame {
             }
         });
 
-        btnLer.setText("Ler");
-
         btnExc.setText("Excluir");
         btnExc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExcActionPerformed(evt);
+            }
+        });
+
+        bntExport.setText("Exportar para CSV");
+        bntExport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bntExportActionPerformed(evt);
             }
         });
 
@@ -114,9 +121,9 @@ public class productForm extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnAtual)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnLer)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnExc)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(bntExport)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -126,8 +133,8 @@ public class productForm extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd)
                     .addComponent(btnAtual)
-                    .addComponent(btnLer)
-                    .addComponent(btnExc))
+                    .addComponent(btnExc)
+                    .addComponent(bntExport))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -416,6 +423,33 @@ public class productForm extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnExcActionPerformed
 
+    private void bntExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bntExportActionPerformed
+        String filename = "C:\\Users\\Frog\\Desktop\\Trabson Facul\\Arquivos CSV\\ExporedFileJava.csv";
+        // Escopo Futuro
+        try{
+            FileWriter fw = new FileWriter(filename);
+        pst = con.prepareStatement("SELECT * FROM produtos");
+        rs = pst.executeQuery();
+            while(rs.next()){
+                fw.append(rs.getString(1));
+                fw.append(',');
+                fw.append(rs.getString(2));
+                fw.append(',');
+                fw.append(rs.getString(3));
+                fw.append(',');
+                fw.append(rs.getString(4));
+                fw.append('\n');
+            }
+            JOptionPane.showMessageDialog(this,"O arquivo CVS foi exportado!");
+            fw.flush();
+            fw.close();
+        } catch(IOException ex){
+            Logger.getLogger(productForm.class.getName()).log(Level.SEVERE,null,ex);
+        }   catch (SQLException ex) {
+                Logger.getLogger(productForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    }//GEN-LAST:event_bntExportActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -486,10 +520,10 @@ public class productForm extends javax.swing.JFrame {
     }
 }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bntExport;
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnAtual;
     private javax.swing.JButton btnExc;
-    private javax.swing.JButton btnLer;
     private javax.swing.JButton btnPesq;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
