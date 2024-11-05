@@ -304,7 +304,16 @@ public class productForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-      try{
+      
+        if(txtNome.getText().isEmpty()){
+           JOptionPane.showMessageDialog(this,"Nome do Produto é necessário!!"); 
+        }else if (txtPreco.getText().isEmpty()){
+            JOptionPane.showMessageDialog(this,"Preço do Produto é necessário!!");
+        }else if(txtVal.getText().isEmpty()){
+            JOptionPane.showMessageDialog(this,"Validade do Produto é necessário!!");
+        }else{
+        
+        try{
         String pNome = txtNome.getText();
         String strPreco = txtPreco.getText();
         String Estoque = txtEstoq.getText();
@@ -332,13 +341,21 @@ public class productForm extends javax.swing.JFrame {
           
       }catch (SQLException e) {
         Logger.getLogger(productForm.class.getName()).log(Level.SEVERE,null,ex);
-    }
-    
+        }
+      }
     
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnAtualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtualActionPerformed
-    try {
+    if(txtNome.getText().isEmpty()){
+           JOptionPane.showMessageDialog(this,"Nome do Produto é necessário!!"); 
+        }else if (txtPreco.getText().isEmpty()){
+            JOptionPane.showMessageDialog(this,"Preço do Produto é necessário!!");
+        }else if(txtVal.getText().isEmpty()){
+            JOptionPane.showMessageDialog(this,"Validade do Produto é necessário!!");
+        }else{
+        
+        try {
         String pNome = txtNome.getText();
         String strPreco = txtPreco.getText();
         String Estoque = txtEstoq.getText();
@@ -366,7 +383,8 @@ public class productForm extends javax.swing.JFrame {
     } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro ao atualizar o produto: " + e.getMessage());
     }
-            
+          
+    }
     }//GEN-LAST:event_btnAtualActionPerformed
 
     private void btnPesqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesqActionPerformed
@@ -397,7 +415,14 @@ public class productForm extends javax.swing.JFrame {
     }//GEN-LAST:event_txtIdActionPerformed
 
     private void btnExcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcActionPerformed
-            try {
+        if(txtNome.getText().isEmpty()){
+           JOptionPane.showMessageDialog(this,"Nome do Produto é necessário!!"); 
+        }else if (txtPreco.getText().isEmpty()){
+            JOptionPane.showMessageDialog(this,"Preço do Produto é necessário!!");
+        }else if(txtVal.getText().isEmpty()){
+            JOptionPane.showMessageDialog(this,"Validade do Produto é necessário!!");
+        }else{    
+        try {
                 
                 String Id = txtId.getSelectedItem().toString();
                 pst=con.prepareStatement("DELETE FROM produtos WHERE produtoid=?");
@@ -420,6 +445,7 @@ public class productForm extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 Logger.getLogger(productForm.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
         
     }//GEN-LAST:event_btnExcActionPerformed
 
