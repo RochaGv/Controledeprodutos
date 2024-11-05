@@ -20,6 +20,7 @@ public class productForm extends javax.swing.JFrame {
         }    
     Connection con;
     PreparedStatement pst;
+    ResultSet rs;
 
 
     public void Connect() {
@@ -288,19 +289,18 @@ public class productForm extends javax.swing.JFrame {
 
     try {
         
-        Float Preco = Float.valueOf(strPreco);
+        
 
         
-        pst = con.prepareStatement("INSERT INTO produtos (pNome, Validade, Estoque) VALUES(?, ?, ?)");
+        pst = con.prepareStatement("INSERT INTO produtos (pNome, validade, estoque, preco) VALUES(?, ?, ?, ?)");
         pst.setString(1, pNome);
         pst.setString(2, Validade);
         pst.setString(3, Estoque);
+        pst.setFloat(4, Float.parseFloat(strPreco));
         pst.executeUpdate(); 
 
         
-        pst = con.prepareStatement("INSERT INTO venda (Preco) VALUES(?)");
-        pst.setFloat(1, Preco);
-        pst.executeUpdate(); 
+
 
         JOptionPane.showMessageDialog(null, "Produto adicionado com sucesso!");
     } catch (NumberFormatException e) {
@@ -330,6 +330,7 @@ public class productForm extends javax.swing.JFrame {
             if(k==1){
             JOptionPane.showMessageDialog(this,"Atualização completa do produto: ");
                 txtNome.setText("");
+                txtPreco.setText("");
                 txtEstoq.setText("");
                 txtVal.setText("");
                 txtNome.requestFocus();
@@ -342,7 +343,26 @@ public class productForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAtualActionPerformed
 
     private void btnPesqActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesqActionPerformed
-    
+            try {
+                String Id = txtId.getSelectedItem().toString();
+                
+                pst = con.prepareStatement("SELECT * FROM produtos WHERE produtoid=?");
+                pst.setString(1, Id);
+                rs=pst.executeQuery();
+                
+                if(rs.next()==true){
+                    txtNome.setText(rs.getString(2));
+                    txtPreco.setText(rs.getString(5));
+                    txtEstoq.setText(rs.getString(4));
+                    txtVal.setText(rs.getString(3));
+                } else {
+                    JOptionPane.showMessageDialog(null, "Erro: Não encontramos nada!!");
+                }
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(productForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
     }//GEN-LAST:event_btnPesqActionPerformed
 
     private void txtIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdActionPerformed
