@@ -94,6 +94,11 @@ public class productForm extends javax.swing.JFrame {
         btnLer.setText("Ler");
 
         btnExc.setText("Excluir");
+        btnExc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -368,6 +373,32 @@ public class productForm extends javax.swing.JFrame {
     private void txtIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtIdActionPerformed
+
+    private void btnExcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcActionPerformed
+            try {
+                
+                String Id = txtId.getSelectedItem().toString();
+                pst=con.prepareStatement("DELETE FROM produtos WHERE produtoid=?");
+                pst.setString(1, Id);
+                
+                int k = pst.executeUpdate();
+                if(k==1){
+                    JOptionPane.showMessageDialog(null, "O Produto foi apagado!!");
+                    txtNome.setText("");
+                    txtPreco.setText("");
+                    txtEstoq.setText("");
+                    txtVal.setText("");
+                    txtNome.requestFocus();
+                    LoadProductNo();                    
+                }else{
+                    JOptionPane.showMessageDialog(null, "Error: O Produto não foi apagado!!");
+                }
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(productForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+    }//GEN-LAST:event_btnExcActionPerformed
 
     /**
      * @param args the command line arguments
