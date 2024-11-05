@@ -1,12 +1,15 @@
 
+import com.mysql.cj.jdbc.result.ResultSetMetaData;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author Frog
@@ -17,6 +20,7 @@ public class productForm extends javax.swing.JFrame {
             initComponents();
             Connect();
             LoadProductNo();
+            Fetch();
         }    
     Connection con;
     PreparedStatement pst;
@@ -129,15 +133,23 @@ public class productForm extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Produto Id", "Nome", "Preço", "Estoque", "Validade"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -285,35 +297,37 @@ public class productForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        // TODO add your handling code here:
-    
-    String pNome = txtNome.getText();
-    String strPreco = txtPreco.getText(); 
-    String Estoque = txtEstoq.getText();
-    String Validade = txtVal.getText();
-
-    try {
-        
-        
-
+      try{
+        String pNome = txtNome.getText();
+        String strPreco = txtPreco.getText();
+        String Estoque = txtEstoq.getText();
+        String Validade = txtVal.getText();
         
         pst = con.prepareStatement("INSERT INTO produtos (pNome, validade, estoque, preco) VALUES(?, ?, ?, ?)");
         pst.setString(1, pNome);
         pst.setString(2, Validade);
         pst.setString(3, Estoque);
         pst.setFloat(4, Float.parseFloat(strPreco));
-        pst.executeUpdate(); 
-
         
-
-
-        JOptionPane.showMessageDialog(null, "Produto adicionado com sucesso!");
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(null, "Erro: O preço deve ser um número válido.");
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, "Erro ao adicionar o produto: " + e.getMessage());
+        int k = pst.executeUpdate();
+        
+        if(k==1){
+            JOptionPane.showMessageDialog(this,"Produto Adcionado com sucesso!");
+            txtNome.setText("");
+            txtPreco.setText("");
+            txtEstoq.setText("");
+            txtVal.setText("");
+            Fetch();
+            LoadProductNo();
+        }else{
+            JOptionPane.showMessageDialog(this,"Error: Produto não foi Adcionado!");
+        }
+          
+      }catch (SQLException e) {
+        Logger.getLogger(productForm.class.getName()).log(Level.SEVERE,null,ex);
     }
-
+    
+    
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnAtualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtualActionPerformed
@@ -339,6 +353,7 @@ public class productForm extends javax.swing.JFrame {
                 txtEstoq.setText("");
                 txtVal.setText("");
                 txtNome.requestFocus();
+                Fetch();
                 LoadProductNo();
             }
     } catch (SQLException e) {
@@ -389,6 +404,7 @@ public class productForm extends javax.swing.JFrame {
                     txtEstoq.setText("");
                     txtVal.setText("");
                     txtNome.requestFocus();
+                    Fetch();
                     LoadProductNo();                    
                 }else{
                     JOptionPane.showMessageDialog(null, "Error: O Produto não foi apagado!!");
@@ -431,6 +447,34 @@ public class productForm extends javax.swing.JFrame {
             new productForm().setVisible(true);
         });
     }
+
+    private void Fetch() {
+            try {
+                int q;
+                pst = con.prepareStatement("SELECT * FROM produtos");
+                rs = pst.executeQuery();
+                java.sql.ResultSetMetaData rss = rs.getMetaData();
+                q = rss.getColumnCount();
+                
+                DefaultTableModel df = (DefaultTableModel)jTable1.getModel();
+                df.setRowCount(0);
+                while(rs.next()){
+                
+                    Vector v2 = new Vector();
+                    for(int a=1; a<=q; a++){
+                    
+                        v2.add(rs.getString("produtoid"));
+                        v2.add(rs.getString("pNome"));
+                        v2.add(rs.getString("preco"));
+                        v2.add(rs.getString("estoque"));
+                        v2.add(rs.getString("validade"));
+                    }
+                    df.addRow(v2);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(productForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     public class ConexaoMySQL {
     public static Connection getConnection() throws SQLException {
         String url = "jdbc:mysql://localhost:3306/estoque";
