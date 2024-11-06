@@ -2,7 +2,8 @@
 ### Este é um projeto colaborativo da faculdade com a proposta de desenvolver um sistema de gestão de vendas simples e funcional.
 
 # Diagrama de classes
-![Minimundo- Trabalho de Java](https://github.com/user-attachments/assets/a89a9eeb-ce8f-4ab1-ac82-d42bfefdd38e)
+![Minimundo- Trabalho de Java](https://github.com/user-attachments/assets/1fdb8644-6bd8-4099-ae9d-ceaae0d6c7e2)
+
 
 # Análise do mini-mundo
  O sistema de vendas tem como objetivo gerenciar o ciclo de compras e vendas de produtos, desde a aquisição dos itens de fornecedores até sua venda para os clientes. Ele busca controlar as transações, monitorar o estoque e garantir que as informações sobre produtos e fornecedores estejam sempre atualizadas.
@@ -21,6 +22,10 @@ Representa o processo de venda dos produtos. Aqui, o sistema registra qual produ
 
 # Interface
 ### Docker
+
+# Demonstração em vídeo
+https://youtu.be/1G4_4gMcVHs
+
 
 # Banco de dados
 ### Docker
