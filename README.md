@@ -26,7 +26,7 @@ Representa o processo de venda dos produtos. Aqui, o sistema registra qual produ
 ### Docker
 
 # Observações
-
+Para a criação da aplicação foi usado o Java e o Docker conteiner Sql
 # Integrantes
 ### Davi nunes da encarnação (202309146304)
 ### Yan falcão almeida (202309322609)
